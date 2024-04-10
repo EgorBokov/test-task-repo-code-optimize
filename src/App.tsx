@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { User } from "./types/user";
 import { Button } from "./components/Button";
 import { UserInfo } from "./components/UserInfo";
@@ -9,7 +9,7 @@ export const App = () => {
   const [item, setItem] = useState<User | null>(null);
   const throttledUserItem = useThrottle(item);
 
-  const receiveRandomUser = async () => {
+  const receiveRandomUser = useCallback(async () => {
     try { 
       const id = Math.floor(Math.random() * (10 - 1)) + 1;
       const user = await ApiUserConstructor.getUserById(id);
@@ -20,7 +20,7 @@ export const App = () => {
     } catch(error) { 
       console.error(error);
     }
-  };
+  }, [item]);
 
   const handleButtonClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
